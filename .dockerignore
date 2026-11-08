@@ -1,0 +1,31 @@
+# Virtual environments & caches
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.git/
+.gitignore
+
+# Secrets & local databases (NEVER bake secrets into the Docker image! - Task 6.2)
+.env
+*.db
+*.sqlite3
+
+# Large raw datasets, DVC caches, and experiment logs (Task 6.2 & 6.4 optimization)
+data/raw/
+dvc_storage/
+dvc_toy_lab/
+dvc_toy_remote/
+mlruns/
+mlartifacts/
+kt_dir/
+reports/
+test_uploads/
+
+# Non-champion models & Word/PDF reports
+models/baseline_cnn_best.keras
+models/mobilenetv2_stage1_best.keras
+*.pdf
+*.docx
+~$*
+~WRL*

@@ -1,0 +1,14 @@
+# =============================================================================
+# Task 6.4 (Before Optimization): Unoptimized Dockerfile for Size Comparison
+# Uses full python:3.12 base image (not slim) and keeps pip cache
+# =============================================================================
+FROM python:3.12
+
+WORKDIR /app
+COPY requirements-docker.txt /app/requirements-docker.txt
+RUN pip install -r /app/requirements-docker.txt
+COPY src/inference.py src/app.py /app/src/
+COPY templates/ /app/templates/
+COPY static/ /app/static/
+COPY models/mobilenetv2_finetuned_best.keras /app/models/mobilenetv2_finetuned_best.keras
+CMD ["python", "src/app.py"]

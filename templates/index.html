@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h1>Upload Image for AI vs. Real Authenticity Verification</h1>
+    <p class="subtitle">
+        Powered by fine-tuned <strong>{{ model_name }}</strong> (Decision Threshold = <code>{{ threshold }}</code>, Max Upload = <code>{{ max_upload_mb }} MB</code>).
+        {% if cloud_api_url %}
+        <br><span style="color: #34d399;">🌐 Connected to Cloud Inference API: <code>{{ cloud_api_url }}</code></span>
+        {% endif %}
+    </p>
+
+    <form action="{{ url_for('predict_view') }}" method="POST" enctype="multipart/form-data">
+        <div class="upload-box">
+            <h3>Select an Image File (.jpg, .jpeg, .png, .webp)</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.35rem;">
+                Files are validated and decoded strictly in RAM — uploaded images are never stored on disk.
+            </p>
+            <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" required>
+            <br>
+            <button type="submit" class="btn">🔍 Analyze Image</button>
+        </div>
+    </form>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;">
+        <span>Total predictions recorded in database: <strong>{{ recent_count }}</strong></span>
+        <a href="{{ url_for('history_view') }}" style="color: var(--accent);">View Full Database Trail &rarr;</a>
+    </div>
+</div>
+{% endblock %}

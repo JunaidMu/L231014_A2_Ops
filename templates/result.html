@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>Inference Verdict &amp; Confidence Analysis</h2>
+    <p class="subtitle">
+        Database Trail Record <strong>#{{ result.record_id }}</strong> &bull; Logged at <code>{{ result.timestamp_utc }}</code>
+    </p>
+
+    <div class="result-grid">
+        <div>
+            <img src="{{ result.preview_data_uri }}" alt="Uploaded Preview" class="preview-img">
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem; text-align: center;">
+                Sanitized Name: <code>{{ result.filename }}</code><br>
+                {{ result.meta.width }}&times;{{ result.meta.height }} px ({{ result.meta.format }}, {{ result.meta.size_kb }} KB)
+            </p>
+        </div>
+
+        <div>
+            <div class="verdict-banner {{ 'verdict-ai' if result.is_ai else 'verdict-real' }}">
+                {% if result.is_ai %}
+                    🤖 Verdict: {{ result.verdict }}
+                {% else %}
+                    📷 Verdict: {{ result.verdict }}
+                {% endif %}
+            </div>
+
+            <h3>Confidence: {{ "%.2f"|format(result.confidence_pct) }}%</h3>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: {{ result.confidence_pct }}%;"></div>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Metric / Setting</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Raw Probability P(AI-Generated)</td>
+                    <td><code>{{ "%.4f"|format(result.prob_ai) }}</code></td>
+                </tr>
+                <tr>
+                    <td>Validation-Tuned Decision Threshold</td>
+                    <td><code>{{ result.threshold }}</code> (P(AI) &ge; {{ result.threshold }} &rArr; AI-Generated)</td>
+                </tr>
+                <tr>
+                    <td>Model Served By</td>
+                    <td><code>{{ result.model_name }}</code></td>
+                </tr>
+            </table>
+
+            <div class="caveat-box">
+                ⚠️ <strong>{{ result.caveat }}</strong>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                <a href="{{ url_for('index') }}" class="btn">Analyze Another Image</a>
+                <a href="{{ url_for('history_view') }}" class="btn btn-secondary">View Database History</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionGuard — AI vs Real Image Detector | L231014_A2_Ops</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('index') }}" class="brand">
+            <span>🛡️ VisionGuard</span>
+            <span class="brand-badge">L231014_A2_Ops</span>
+        </a>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Upload Image</a>
+            <a href="{{ url_for('history_view') }}">Prediction History (Database)</a>
+            <a href="{{ url_for('health_check') }}" target="_blank">Health Check JSON</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        VisionGuard AI vs Real Image Classification Service &bull; Junaid Muhammad (Roll No: 23L-1014 | Project: L231014_A2_Ops)
+    </footer>
+</body>
+</html>

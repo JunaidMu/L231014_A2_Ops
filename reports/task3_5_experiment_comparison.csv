@@ -1,0 +1,8 @@
+Run Name,Run ID,Meaningful Change,Backbone,Image Size,LR,Unfrozen Layers,Augmentation,test_accuracy,test_precision,test_recall,test_f1,test_roc_auc
+Run1_Ref_MobileNetV2_lr5e4_unfreeze20_augTrue_160px_Manual,9cd6cd0c76b44c40945bb050c3c3aadb,"Reference Baseline (MobileNetV2, lr=5e-4, unfreeze=20, aug=True, 160x160)",MobileNetV2,160x160,0.0005,20,True,0.7603,0.7473,0.85,0.7953,0.8348
+Run1B_Task3_3_Autolog_MobileNetV2,e8d66471533d4be6a0597dfaa266ad99,Task 3.3 Autologging comparison (mlflow.tensorflow.autolog),MobileNetV2,160x160,0.0005,20,True,0.7329,0.8154,0.6625,0.731,0.803
+Run2_Change_LR_1e4,7d737d5b3ba5457fac4f781e69e62300,Changed learning_rate: 5e-4 -> 1e-4,MobileNetV2,160x160,0.0001,20,True,0.8082,0.8023,0.8625,0.8313,0.8621
+Run3_Change_NoAugmentation,464ecb8ce0de46d4a9efd11b78051a02,Changed use_augmentation: True -> False,MobileNetV2,160x160,0.0005,20,False,0.4795,1.0,0.05,0.0952,0.893
+Run4_Change_FrozenBackbone_0,6676da6c287f4896beecfd5e1b3cd1d5,Changed unfrozen_layers: 20 -> 0 (Fully Frozen Backbone),MobileNetV2,160x160,0.0005,0,True,0.6712,0.6379,0.925,0.7551,0.7477
+Run5_Change_ImageSize_128px,e47e6c8383eb446795723854706a3b50,Changed img_size: 160x160 -> 128x128,MobileNetV2,128x128,0.0005,20,True,0.6575,0.7206,0.6125,0.6622,0.7472
+Run6_Change_Backbone_ResNet50,2bea8a48bc7347b0abc66c234b194772,Changed backbone: MobileNetV2 -> ResNet50,ResNet50,160x160,0.0005,20,True,0.4521,0.0,0.0,0.0,0.6506

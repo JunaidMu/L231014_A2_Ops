@@ -1,0 +1,51 @@
+# =============================================================================
+# Task 6.3: Docker Compose Stack for VisionGuard (L231014_A2_Ops)
+# Defines two services: 'db' (PostgreSQL) and 'web' (Flask + Champion Model)
+# =============================================================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: l231014_visionguard_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-visionguard_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-visionguard_db}
+    volumes:
+      - pgdata_l231014:/var/lib/postgresql/data
+    networks:
+      - visionguard_net
+    # Task 6.3 Requirement: Database publishes NO port to the outside host!
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-visionguard_user} -d $${POSTGRES_DB:-visionguard_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: l231014_a2_ops_web:latest
+    container_name: l231014_visionguard_web
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MODEL_PATH: /app/models/mobilenetv2_finetuned_best.keras
+      DECISION_THRESHOLD: ${DECISION_THRESHOLD:-0.48}
+      MAX_UPLOAD_MB: "2.0"
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-visionguard_user}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-visionguard_db}
+    ports:
+      - "8000:8000"
+    networks:
+      - visionguard_net
+
+volumes:
+  pgdata_l231014:
+
+networks:
+  visionguard_net:
+    driver: bridge

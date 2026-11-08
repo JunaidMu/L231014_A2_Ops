@@ -1,0 +1,11 @@
+# Minimal CPU-only runtime dependencies for the VisionGuard Docker container (Task 6.2 & 6.4)
+tensorflow-cpu
+numpy
+pandas
+Pillow
+Flask
+Flask-SQLAlchemy
+psycopg2-binary
+python-dotenv
+requests
+waitress

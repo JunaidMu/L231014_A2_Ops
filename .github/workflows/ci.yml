@@ -1,0 +1,46 @@
+name: VisionGuard CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  lint-test-and-docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-docker.txt pytest flake8
+
+      - name: Run Flake8 linting (syntax & undefined names check)
+        run: |
+          flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 src/ tests/ --count --exit-zero --max-line-length=120 --statistics
+
+      - name: Run Pytest unit & validation tests
+        run: |
+          pytest tests/ -v
+
+      - name: Generate dummy model file if not tracked in Git for Docker build verification
+        run: |
+          mkdir -p models
+          if [ ! -f models/mobilenetv2_finetuned_best.keras ]; then
+            python -c "import tensorflow as tf; m = tf.keras.Sequential([tf.keras.layers.Input((160,160,3)), tf.keras.layers.GlobalAveragePooling2D(), tf.keras.layers.Dense(1, activation='sigmoid')]); m.save('models/mobilenetv2_finetuned_best.keras')"
+          fi
+
+      - name: Build VisionGuard Docker image
+        run: |
+          docker build -t l231014_a2_ops_web:ci .

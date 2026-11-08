@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1>Database Prediction Trail (History)</h1>
+            <p class="subtitle">
+                Permanent SQLite/PostgreSQL record answering: <em>what was decided, when, by which model, and how confidently.</em>
+            </p>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn">+ New Prediction</a>
+    </div>
+
+    {% if records %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>When (UTC Timestamp)</th>
+                <th>Sanitized File</th>
+                <th>Dimensions</th>
+                <th>What Was Decided</th>
+                <th>Confidence</th>
+                <th>Raw P(AI)</th>
+                <th>By Which Model</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td><strong>#{{ r.id }}</strong></td>
+                <td><code>{{ r.timestamp_utc }}</code></td>
+                <td><code>{{ r.filename }}</code></td>
+                <td>{{ r.image_dimensions }}</td>
+                <td>
+                    <span class="pill {{ 'pill-ai' if r.verdict == 'AI-Generated' else 'pill-real' }}">
+                        {{ r.verdict }}
+                    </span>
+                </td>
+                <td><strong>{{ "%.2f"|format(r.confidence_pct) }}%</strong></td>
+                <td><code>{{ "%.4f"|format(r.prob_ai) }}</code> (T={{ r.threshold }})</td>
+                <td><code>{{ r.model_name }}</code></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="padding: 2rem 0; color: var(--text-muted); text-align: center;">
+        No predictions logged yet. Upload an image on the home page to record your first entry!
+    </p>
+    {% endif %}
+</div>
+{% endblock %}
