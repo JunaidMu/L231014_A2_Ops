@@ -1,19 +1,17 @@
 """
-Generates a complete, formatted, publication-grade Word document (`FinalReport.docx`)
-using pure Python + OOXML (`zipfile` + `xml.etree.ElementTree` + `PIL`), without modifying
-`Evidence Document.docx`.
+Generates the complete, formatted, publication-grade Word document (`FinalReport.docx`)
+for all 8 Tasks (100 Marks + Bonus) using pure Python + OOXML (`zipfile` + `PIL`),
+without modifying `Evidence Document.docx`.
 
 Includes:
-- Front Matter (Title, Name: Junaid Muhammad, Roll No: 23L-1014 / L231014_A2_Ops,
-  GitHub link, DagsHub link, Commit hash, AI Assistant Disclosure).
-- Chapters 1 through 5 (with all 41 extracted screenshots from Evidence Document.docx,
-  formal figure captions, in-text references, formatted tables, and full explanations
-  of what was done, why, how it works, and what went wrong).
-- Placeholders/templates for Chapters 6, 7, and 8 ready to be populated once Task 6-8
-  screenshots are added.
+- Section 11.1 Front Matter (Title, Name: Junaid Muhammad, Roll No: 23L-1014 / L231014_A2_Ops,
+  GitHub link, DagsHub link, Live Vercel API URL: https://l231014-a2-ops.vercel.app,
+  Commit hash, AI Assistant Disclosure).
+- Chapters 1 through 8 with all 62 extracted screenshots from Evidence Document.docx,
+  numbered captions, in-text references, formatted tables, and comprehensive explanations
+  of what was done, why, how it works, and what went wrong.
 """
 
-import shutil
 import zipfile
 from pathlib import Path
 from PIL import Image
@@ -37,7 +35,7 @@ def xml_escape(text: str) -> str:
 class DocxBuilder:
     def __init__(self):
         self.body_elements: list[str] = []
-        self.media_files: list[tuple[str, Path]] = []  # (rId, file_path)
+        self.media_files: list[tuple[str, Path]] = []
         self._rel_counter = 10
         self._doc_pr_counter = 1
 
@@ -57,7 +55,7 @@ class DocxBuilder:
                   <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>
                   <w:b/>
                   <w:color w:val="1E3A8A"/>
-                  <w:sz w:val="34"/>
+                  <w:sz w:val="32"/>
                 </w:rPr>
                 <w:t>{t}</w:t>
               </w:r>
@@ -242,8 +240,8 @@ class DocxBuilder:
         aspect = h_px / float(w_px) if w_px else 0.6
         width_in = min(max_width_inches, 6.0)
         height_in = width_in * aspect
-        if height_in > 4.2:
-            height_in = 4.2
+        if height_in > 4.1:
+            height_in = 4.1
             width_in = height_in / aspect
 
         cx = int(width_in * 914400)
@@ -260,7 +258,7 @@ class DocxBuilder:
             <w:p>
               <w:pPr>
                 <w:jc w:val="center"/>
-                <w:spacing w:before="120" w:after="40"/>
+                <w:spacing w:before="110" w:after="40"/>
               </w:pPr>
               <w:r>
                 <w:drawing>
@@ -295,7 +293,7 @@ class DocxBuilder:
             <w:p>
               <w:pPr>
                 <w:jc w:val="center"/>
-                <w:spacing w:before="20" w:after="160"/>
+                <w:spacing w:before="20" w:after="150"/>
               </w:pPr>
               <w:r>
                 <w:rPr>
@@ -379,22 +377,23 @@ def build_final_report():
     # FRONT MATTER (Section 11.1 Requirements)
     # -----------------------------------------------------------------------
     doc.add_heading1("VisionGuard (L231014_A2_Ops): AI vs. Real Image Classification & Deployment")
-    doc.add_paragraph("Course: MLOps (Semester 7) — Assignment 2 Technical Report", bold_prefix="Project Title:")
+    doc.add_paragraph("Course: MLOps (Semester 7) — Assignment 2 Final Technical Report", bold_prefix="Submission Report:")
     doc.add_table(
         ["Attribute", "Details"],
         [
             ["Student Name", "Junaid Muhammad"],
-            ["Roll Number", "23L-1014 (Project Identifier: L231014_A2_Ops)"],
-            ["GitHub Repository", "https://github.com/JunaidMu/L231014_A2_Ops"],
-            ["DagsHub Project & MLflow", "https://dagshub.com/JunaidMu/L231014_A2_Ops"],
-            ["Graded Commit Hash", "f450fc5 (main branch)"],
-            ["Live Cloud API URL", "To be populated in Task 7 / Task 8 upon cloud deployment"],
+            ["Roll Number", "23L-1014 (Project Identifier Everywhere: L231014_A2_Ops)"],
+            ["GitHub Repository (Main)", "https://github.com/JunaidMu/L231014_A2_Ops"],
+            ["GitHub Repository (Toy CI Lab)", "https://github.com/JunaidMu/L231014_CI_Toy"],
+            ["DagsHub Project & MLflow Registry", "https://dagshub.com/JunaidMu/L231014_A2_Ops"],
+            ["Live Cloud Model API URL (Vercel)", "https://l231014-a2-ops.vercel.app (Predict: https://l231014-a2-ops.vercel.app/predict)"],
+            ["Graded Commit Hash", "38820ff / main branch"],
             [
                 "AI Assistant & Tutorial Disclosure",
                 "Used Antigravity (Google DeepMind coding assistant) for pair-programming Python scripts, "
-                "debugging Windows Smart App Control Cython DLL restrictions, and structuring report tables. "
-                "All terminal executions, DagsHub/GitHub operations, model training runs, and verifications "
-                "were performed and validated on my local machine.",
+                "debugging Windows Smart App Control Cython DLL restrictions, distilling model weights for Vercel's "
+                "250 MB serverless bundle limit, and formatting report tables. All terminal commands, Git/DagsHub pushes, "
+                "Docker builds, Postman API tests, and Vercel deployments were executed and verified by me.",
             ],
         ],
     )
@@ -404,12 +403,11 @@ def build_final_report():
     # -----------------------------------------------------------------------
     doc.add_heading1("Chapter 1 — Task 1: Data Understanding and Versioning (7 Marks)")
 
-    # Sub-task 1.1
     doc.add_heading2("Sub-task 1.1: Isolated Python Environment & GPU Check (1 Mark)")
     doc.add_bullet(
         "What I did & why:",
         "Created an isolated Python 3.12.10 virtual environment (`python -m venv venv`), activated it via "
-        "`venv\\Scripts\\activate`, and installed the complete MLOps and deep learning stack (`tensorflow==2.21.0`, "
+        "`venv\\Scripts\\activate`, and installed the required MLOps and deep learning libraries (`tensorflow==2.21.0`, "
         "`keras-tuner==1.4.8`, `mlflow==3.18.0`, `dvc==3.67.1`, `Flask==3.1.3`, `numpy==2.5.4`, `pandas==3.1.1`, "
         "`scikit-learn==1.9.1`, `Pillow==13.0.0`). Freezing exact versions into `requirements_exact.txt` guarantees "
         "deterministic environment reproduction across local development, CI runners, and Docker containers.",
@@ -422,9 +420,8 @@ def build_final_report():
     )
     doc.add_image(EVIDENCE_DIR / "image1.png", "Figure 1.1a: Creating and activating the isolated Python virtual environment (venv).")
     doc.add_image(EVIDENCE_DIR / "image2.png", "Figure 1.1b: Installing project dependencies from requirements.txt inside venv.")
-    doc.add_image(EVIDENCE_DIR / "image3.png", "Figure 1.1c: Terminal verification of user identity, timestamp, exact package versions, and TensorFlow GPU check.")
+    doc.add_image(EVIDENCE_DIR / "image3.png", "Figure 1.1c: Terminal verification of user identity (junai), timestamp, exact package versions, and TensorFlow GPU check.")
 
-    # Sub-task 1.2
     doc.add_heading2("Sub-task 1.2: Dataset Audit Script & Integrity Analysis (3 Marks)")
     doc.add_bullet(
         "What I did & why:",
@@ -460,7 +457,6 @@ def build_final_report():
     )
     doc.add_image(EVIDENCE_DIR / "image4.png", "Figure 1.2: Terminal execution of src/task1_data_audit_and_eda.py displaying the per-class audit table and SHA-256 duplicate count.")
 
-    # Sub-task 1.3
     doc.add_heading2("Sub-task 1.3: Visual Exploratory Data Analysis (1.5 Marks)")
     doc.add_image(EVIDENCE_DIR / "image5.png", "Figure 1.3a: Grid of 5 randomly sampled images per class (AiArtData vs RealArt) showing native dimensions and colour modes.")
     doc.add_paragraph(
@@ -481,7 +477,6 @@ def build_final_report():
         bold_prefix="Interpretation of Histograms (Figure 1.3b):",
     )
 
-    # Sub-task 1.4
     doc.add_heading2("Sub-task 1.4: Data Version Control (DVC) — Toy Lab & Dataset Tracking (1.5 Marks)")
     doc.add_bullet(
         "What I did (Toy Lab & Project Dataset):",
@@ -492,16 +487,11 @@ def build_final_report():
         "`data/raw` folder (`975` files, `503.78 MB`), generating `data/raw.dvc` with MD5 hash `b2cec67839f742df4653f66d4bcbbafb.dir` (Figure 1.4c).",
     )
     doc.add_bullet(
-        "What the small .dvc pointer file holds:",
-        "The `.dvc` pointer file (`data.csv.dvc` and `data/raw.dvc`) is a small human-readable YAML manifest that stores the "
-        "content-addressed MD5 hash (`md5`), total byte size (`size: 503783378`), file count (`nfiles: 975`), and relative path (`raw`). "
-        "Git versions this tiny pointer file while DVC stores the actual binary blobs in content-addressed remote storage.",
-    )
-    doc.add_bullet(
-        "Why large data does not belong in Git:",
-        "Git is engineered for line-by-line text diffs and clones the entire historical object database (`.git/objects`) to every developer "
-        "machine. Committing 504 MB of binary images directly into Git bloats repository size, violates GitHub's 100 MB file limit, and "
-        "makes `git clone`, `git checkout`, and CI checkouts prohibitively slow.",
+        "What the small .dvc pointer file holds & why large data does not belong in Git:",
+        "The `.dvc` pointer file (`data.csv.dvc` and `data/raw.dvc`) is a lightweight YAML manifest storing the content-addressed MD5 hash (`md5`), "
+        "byte size (`size: 503783378`), file count (`nfiles: 975`), and relative path (`raw`). Git is engineered for line-by-line source code diffs "
+        "and clones every historical blob into `.git/objects`; putting 504 MB of binary images directly in Git bloats the repository, violates GitHub's "
+        "100 MB file limit, and slows down cloning and branching.",
     )
     doc.add_image(EVIDENCE_DIR / "image7.png", "Figure 1.4a: DVC Toy Lab — Tracking data.csv v1 and v2, pushing to remote storage, and verifying git log --oneline.")
     doc.add_image(EVIDENCE_DIR / "image8.png", "Figure 1.4b: DVC Toy Lab — Returning to v1 via git checkout HEAD~1 + dvc checkout, deleting local data/cache, and restoring via dvc pull.")
@@ -512,7 +502,6 @@ def build_final_report():
     # -----------------------------------------------------------------------
     doc.add_heading1("Chapter 2 — Task 2: Model Development with TensorFlow/Keras (14 Marks + Bonus)")
 
-    # Sub-task 2.1
     doc.add_heading2("Sub-task 2.1: tf.data Input Pipeline & Augmentation (2 Marks)")
     doc.add_bullet(
         "Pipeline Stage-by-Stage Architecture:",
@@ -532,7 +521,6 @@ def build_final_report():
     )
     doc.add_image(EVIDENCE_DIR / "image10.png", "Figure 2.1: One augmented training batch (160x160 RGB) showing random flips, rotations, zoom, and contrast perturbations.")
 
-    # Sub-task 2.2
     doc.add_heading2("Sub-task 2.2: Baseline CNN Built From Scratch (3 Marks)")
     doc.add_bullet(
         "Architecture, Loss, Optimizer & Metrics Justification:",
@@ -541,8 +529,7 @@ def build_final_report():
         "channel distributions and speed up convergence) and `2x2 MaxPooling2D` (to halve spatial dimensions from `160 -> 80 -> 40 -> 20` and "
         "provide translation invariance). `GlobalAveragePooling2D` collapses the `20x20x128` map into a 128-D vector (avoiding dense parameter "
         "explosion), followed by `Dense(64, relu)`, `Dropout(0.4)` (to prevent co-adaptation overfitting), and `Dense(1, sigmoid)`. We compiled "
-        "with `binary_crossentropy` (the maximum-likelihood loss for Bernoulli binary targets), `Adam(lr=1e-3)` (adaptive moment estimation), "
-        "and `accuracy` + `ROC-AUC` metrics.",
+        "with `binary_crossentropy`, `Adam(lr=1e-3)`, and `accuracy` + `ROC-AUC` metrics.",
     )
     doc.add_table(
         ["Layer Name", "Layer Type", "Output Shape", "Param Count", "Trainable", "Architectural Purpose"],
@@ -568,7 +555,6 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image11.png", "Figure 2.2a: Terminal output of Baseline CNN model.summary() (top section).")
     doc.add_image(EVIDENCE_DIR / "image12.png", "Figure 2.2b: Terminal output of Baseline CNN total parameters (102,465) and per-layer shape/parameter table.")
 
-    # Sub-task 2.3
     doc.add_heading2("Sub-task 2.3: Transfer Learning with Pretrained MobileNetV2 (3 Marks)")
     doc.add_bullet(
         "Two-Stage Transfer Learning & Preprocessing Explanation:",
@@ -585,7 +571,6 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image15.png", "Figure 2.3c: Stage 1 (Frozen MobileNetV2 Backbone) Loss and Accuracy curves with Best Epoch (7) marked.")
     doc.add_image(EVIDENCE_DIR / "image16.png", "Figure 2.3d: Stage 2 (Fine-Tuned MobileNetV2 Last Block) Loss and Accuracy curves with Best Epoch (4) marked.")
 
-    # Sub-task 2.4
     doc.add_heading2("Sub-task 2.4: Training Discipline, Callbacks & Best Epoch (1 Mark)")
     doc.add_bullet(
         "Seeds, Callbacks & Best Epochs:",
@@ -596,7 +581,6 @@ def build_final_report():
     )
     doc.add_image(EVIDENCE_DIR / "image17.png", "Figure 2.4: Baseline CNN Loss and Accuracy curves with Best Epoch (Epoch 1) marked and early stopping at Epoch 5.")
 
-    # Sub-task 2.5
     doc.add_heading2("Sub-task 2.5: Single Test-Set Evaluation & Threshold Justification (2 Marks)")
     doc.add_table(
         ["Model", "Val-Selected Threshold", "Test Accuracy", "Test Precision", "Test Recall", "Test F1-Score", "Test ROC-AUC"],
@@ -616,7 +600,6 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image18.png", "Figure 2.5a: Test Set Confusion Matrices (Baseline CNN vs. Fine-Tuned MobileNetV2) and ROC Curve Comparison.")
     doc.add_image(EVIDENCE_DIR / "image19.png", "Figure 2.5b: Terminal output of validation threshold selection and single test-set evaluation metrics.")
 
-    # Sub-task 2.6 & Bonus Grad-CAM
     doc.add_heading2("Sub-task 2.6 & Bonus: Error Analysis (10 Misclassified Images) & Grad-CAM (1 + 1 Marks)")
     doc.add_image(EVIDENCE_DIR / "image20.png", "Figure 2.6: Grid of 10 highest-confidence misclassified test images with true labels, predicted probabilities, and original dimensions.")
     doc.add_table(
@@ -642,7 +625,6 @@ def build_final_report():
         bold_prefix="Grad-CAM Interpretation (Bonus +1 Mark):",
     )
 
-    # Sub-task 2.7
     doc.add_heading2("Sub-task 2.7: Tool Lab — Keras Tuner (Toy Fashion-MNIST & VisionGuard) (2 Marks)")
     doc.add_bullet(
         "What Went Wrong & How We Fixed It (Figure 2.7a):",
@@ -689,7 +671,6 @@ def build_final_report():
     # -----------------------------------------------------------------------
     doc.add_heading1("Chapter 3 — Task 3: Experiment Tracking with MLflow and DagsHub (12 Marks)")
 
-    # Sub-task 3.1
     doc.add_heading2("Sub-task 3.1: Tool Lab — Local MLflow Tracking & Core Definitions (2 Marks)")
     doc.add_bullet(
         "What Went Wrong on Windows & Fix (Figure 3.1a):",
@@ -706,7 +687,6 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image24.png", "Figure 3.1a: Windows Smart App Control blocking SQLAlchemy's unsigned Cython .pyd extension before switching to pure-Python SQLAlchemy.")
     doc.add_image(EVIDENCE_DIR / "image25.png", "Figure 3.1b: Local MLflow UI (127.0.0.1:5000) comparing the two Fashion-MNIST toy runs (lr=0.001 vs lr=0.01).")
 
-    # Sub-task 3.2
     doc.add_heading2("Sub-task 3.2: DagsHub Setup, Environment Variables & Git-Ignore Proof (2 Marks)")
     doc.add_bullet(
         "What I did & why:",
@@ -719,7 +699,6 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image27.png", "Figure 3.2b: DagsHub Experiments table showing the remote toy Fashion-MNIST runs.")
     doc.add_image(EVIDENCE_DIR / "image28.png", "Figure 3.2c: Terminal output of remote DagsHub run completion and git check-ignore -v .env proof.")
 
-    # Sub-task 3.3 & 3.4
     doc.add_heading2("Sub-tasks 3.3 & 3.4: Manual vs. Autolog Instrumentation & Run Artifacts (4.5 Marks)")
     doc.add_bullet(
         "Manual Logging vs. mlflow.tensorflow.autolog() (Figures 3.3a–3.3b):",
@@ -738,7 +717,6 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image30.png", "Figure 3.3b: DagsHub MLflow Run Page for TensorFlow Autologging comparison run.")
     doc.add_image(EVIDENCE_DIR / "image31.png", "Figure 3.4: DagsHub MLflow Artifacts tab showing environment/requirements_exact.txt, evaluation_plots/ (CM & ROC), and splits/ (train, val, test CSVs).")
 
-    # Sub-task 3.5 & 3.6
     doc.add_heading2("Sub-tasks 3.5 & 3.6: 6-Run Experiment Comparison & Model Registry (@champion) (3.5 Marks)")
     doc.add_table(
         ["Run Name", "Single Meaningful Change", "Backbone", "Size", "LR", "Unfrozen", "Aug", "Test Acc", "Test F1", "Test ROC-AUC"],
@@ -806,8 +784,158 @@ def build_final_report():
     doc.add_image(EVIDENCE_DIR / "image40.png", "Figure 4.4: Health-Check JSON response (http://127.0.0.1:8000/health) proving debug_mode=false, model_loaded_once=true, and database_connected=true.")
     doc.add_image(EVIDENCE_DIR / "image41.png", "Figure 5.1: Task 5 Database Prediction Trail (/history menu) displaying permanent records of what was decided, when, by which model, and how confidently.")
 
+    # -----------------------------------------------------------------------
+    # CHAPTER 6: TASK 6 — CONTAINERIZATION WITH DOCKER, COMPOSE & CI (14 MARKS)
+    # -----------------------------------------------------------------------
+    doc.add_heading1("Chapter 6 — Task 6: Containerization with Docker, Docker Compose & GitHub Actions CI (14 Marks)")
+
+    doc.add_heading2("Sub-task 6.1: Docker Warm-Up & Core Definitions (2 Marks)")
+    doc.add_bullet(
+        "What I did:",
+        "Practised container lifecycle operations with `nginx:alpine` (Figures 6.1a–6.1b): ran a detached container (`warmup_l231014`), mapped host port `8088` "
+        "to container port `80` (`-p 8088:80`), bind-mounted `./docker_warmup_vol` to `/usr/share/nginx/html:ro`, verified HTTP response with `curl`, inspected "
+        "`docker logs`, executed `whoami && uname -a && ls -la` inside the container via `docker exec`, and listed/removed both the container and image.",
+    )
+    doc.add_bullet("Image:", "An immutable, read-only template composed of stacked filesystem layers containing application code, libraries, and OS binaries.")
+    doc.add_bullet("Container:", "A runnable, isolated process instance of an image with its own writable top layer, network namespace, and cgroup resource limits.")
+    doc.add_bullet("Layer:", "A read-only filesystem diff created by each instruction (`FROM`, `RUN`, `COPY`) in a Dockerfile, cached and shared across images.")
+    doc.add_bullet("Volume:", "Persistent storage managed by Docker (`pgdata_l231014`) or mounted from the host that survives container restarts and deletion.")
+    doc.add_bullet("Port Mapping:", "Forwarding traffic from a host network interface port (e.g., `localhost:8000`) to an internal container port (`8000/tcp`).")
+    doc.add_image(EVIDENCE_DIR / "image42.png", "Figure 6.1a: Docker Warm-Up — Pulling nginx:alpine, mounting volume, mapping port 8088:80, and serving custom HTML.")
+    doc.add_image(EVIDENCE_DIR / "image43.png", "Figure 6.1b: Docker Warm-Up — Inspecting logs, executing shell commands inside container, listing and removing container/image.")
+
+    doc.add_heading2("Sub-task 6.2 & 6.4: Production Dockerfile, Non-Root Execution & Image Size Optimization (4.5 Marks)")
+    doc.add_bullet(
+        "Dockerfile Instruction Order & Layer Caching (Task 6.2 — https://github.com/JunaidMu/L231014_A2_Ops/blob/main/Dockerfile):",
+        "We structured `Dockerfile` on `python:3.12-slim` so that `COPY requirements-docker.txt` and `RUN pip install --no-cache-dir -r requirements-docker.txt` "
+        "execute BEFORE `COPY src/ templates/ static/`. Because Docker invalidates a layer's cache only when the files copied into that layer change, editing "
+        "Python code or HTML templates reuses the cached 1.77 GB `pip install` layer in 0.0 seconds (verified by `CACHED [5/11]` in Figure 6.2b). We deliberately "
+        "chose `tensorflow-cpu` instead of the full GPU bundle to avoid ~1.8 GB of unused NVIDIA CUDA/cuDNN shared libraries, created a non-root user "
+        "(`uid=999(appuser) gid=999(appgroup)`), added a `/health` `HEALTHCHECK`, and excluded `.env`, `venv/`, and `data/raw/` via `.dockerignore`.",
+    )
+    doc.add_table(
+        ["Image Tag", "Base Image & Build Strategy", "Uncompressed Disk Usage", "Compressed Content Size", "Reduction"],
+        [
+            ["l231014_a2_ops_web:unoptimized", "python:3.12 (Full Debian + pip cache kept)", "4.54 GB", "1.20 GB", "Baseline"],
+            ["l231014_a2_ops_web:optimized", "python:3.12-slim + --no-cache-dir + .dockerignore", "2.44 GB", "488 MB", "-2.10 GB (-46.3% Disk / -59.3% Content)"],
+        ],
+    )
+    doc.add_bullet(
+        "Image Layer Analysis Conclusion (Task 6.4 — Figure 6.4):",
+        "Inspecting `docker history l231014_a2_ops_web:optimized` shows that the largest layer is `RUN pip install --no-cache-dir` (`1.77 GB`, dominated by "
+        "`tensorflow-cpu`), followed by the base Debian Trixie slim rootfs (`87.7 MB`), Python 3.12 runtime (`41.4 MB`), and the champion `.keras` model (`19.3 MB`). "
+        "Switching from full `python:3.12` to `python:3.12-slim` with `--no-cache-dir` and `.dockerignore` reduced uncompressed image size from `4.54 GB` to `2.44 GB` "
+        "(and compressed size from `1.20 GB` to `488 MB`).",
+    )
+    doc.add_image(EVIDENCE_DIR / "image44.png", "Figure 6.2a: Building the optimized and unoptimized VisionGuard Docker images.")
+    doc.add_image(EVIDENCE_DIR / "image45.png", "Figure 6.2b: Proof of non-root container user (uid=999(appuser) gid=999(appgroup)) and Docker layer cache hits.")
+    doc.add_image(EVIDENCE_DIR / "image54.png", "Figure 6.4: Output of docker images (4.54 GB unoptimized vs 2.44 GB optimized) and docker history layer breakdown.")
+
+    doc.add_heading2("Sub-task 6.3: Two-Service Docker Compose Stack & Closed DB Port Proof (4 Marks)")
+    doc.add_bullet(
+        "Compose Architecture (https://github.com/JunaidMu/L231014_A2_Ops/blob/main/docker-compose.yml):",
+        "Defined two services (`db` running `postgres:16-alpine` and `web` running `l231014_a2_ops_web:latest`) connected over internal bridge network "
+        "`visionguard_net`. The `web` service reaches PostgreSQL by service hostname `db:5432`, waits for database readiness via `depends_on: db: condition: service_healthy` "
+        "(`pg_isready`), and reads credentials from the untracked `.env` file (with `.env.example` committed). The champion model (`19.3 MB`) is built into the image "
+        "at `/app/models/mobilenetv2_finetuned_best.keras` so the container is self-contained and portable across cloud hosts. Critically, `db` has no `ports:` mapping, "
+        "so `Test-NetConnection -ComputerName localhost -Port 5432` returns `TcpTestSucceeded: False` from outside (Figure 6.3).",
+    )
+    doc.add_image(EVIDENCE_DIR / "image46.png", "Figure 6.3: Docker Compose stack showing both web and db services (healthy), /health connected to PostgreSQL, and TcpTestSucceeded: False on port 5432.")
+
+    doc.add_heading2("Sub-task 6.5: Container Operations & Intentional Failure Troubleshooting (1.5 Marks)")
+    doc.add_bullet(
+        "Operations, Intentional Breakage, Log Diagnosis & Fix (Figures 6.5a–6.5c):",
+        "Demonstrated `docker compose logs` on `web` and `db` (Figure 6.5a), executed interactive shells inside both containers (`psql -c '\\dt'` confirming "
+        "`prediction_history` table in PostgreSQL), and ran `restart`, `stop`, and `start` (Figure 6.5b). We then intentionally broke the web container by passing "
+        "`-e MODEL_PATH=/app/models/missing_model.keras`. Inspecting `docker logs broken_web_l231014` revealed `FileNotFoundError: [CRITICAL] Champion model file "
+        "not found at: /app/models/missing_model.keras` at line 60 of `src/inference.py` (Figure 6.5c). Removing the broken override and restoring `docker compose up -d` "
+        "brought both services back to `(healthy)`.",
+    )
+    doc.add_image(EVIDENCE_DIR / "image47.png", "Figure 6.5a: Inspecting container logs for both web and db services.")
+    doc.add_image(EVIDENCE_DIR / "image48.png", "Figure 6.5b: Executing shell commands inside web and db (psql table check) and demonstrating restart, stop, and start.")
+    doc.add_image(EVIDENCE_DIR / "image49.png", "Figure 6.5c: Diagnosing the intentional missing_model.keras crash strictly from docker logs and restoring the healthy Compose stack.")
+
+    doc.add_heading2("Sub-task 6.6: Tool Lab — GitHub Actions CI (Toy Matrix & VisionGuard CI) (2 Marks)")
+    doc.add_bullet(
+        "Toy Matrix Repository & VisionGuard CI Workflow:",
+        "In throwaway repository `JunaidMu/L231014_CI_Toy`, we created a matrix workflow testing Python `3.11` and `3.12` on every push, first pushing an intentional "
+        "failing assertion (`Red run`, Figure 6.6b) and then fixing it (`Green run`, Figure 6.6c). In our main repository `JunaidMu/L231014_A2_Ops`, we created "
+        "`.github/workflows/ci.yml` to install dependencies, run `flake8` linting, run `pytest tests/ -v`, and build the Docker image. After fixing the initial CI step "
+        "order so the model file exists before `pytest` imports `src/app.py`, the workflow passed with a green checkmark (Figure 6.6a) and displays a live green badge "
+        "in `README.md` (Figure 6.6d).",
+    )
+    doc.add_bullet(
+        "Where Workflow Secrets Are Stored & Why They Must Not Appear in the Workflow YAML:",
+        "Workflow secrets are stored encrypted in GitHub Repository Settings -> `Settings > Secrets and variables > Actions` and injected at runtime via "
+        "`${{ secrets.SECRET_NAME }}`. They must never be hardcoded in `.github/workflows/*.yml` because workflow files are committed to Git history and visible "
+        "to anyone who clones the repository or views pull requests.",
+    )
+    doc.add_image(EVIDENCE_DIR / "image50.png", "Figure 6.6a: VisionGuard GitHub Actions CI showing the initial Red run (#1) and fixed Green run (#2) on JunaidMu/L231014_A2_Ops.")
+    doc.add_image(EVIDENCE_DIR / "image51.png", "Figure 6.6b: Throwaway Toy CI repository (JunaidMu/L231014_CI_Toy) showing the intentional Red failing matrix run.")
+    doc.add_image(EVIDENCE_DIR / "image52.png", "Figure 6.6c: Throwaway Toy CI repository showing both the Red failing run and fixed Green passing run.")
+    doc.add_image(EVIDENCE_DIR / "image53.png", "Figure 6.6d: GitHub repository README displaying the live green 'VisionGuard CI passing' status badge.")
+
+    # -----------------------------------------------------------------------
+    # CHAPTER 7: TASK 7 — API DEPLOYMENT ON CLOUD / VERCEL (15 MARKS)
+    # -----------------------------------------------------------------------
+    doc.add_heading1("Chapter 7 — Task 7: Model API Deployment on Vercel Cloud (15 Marks)")
+
+    doc.add_heading2("Pathway B: Deploying the VisionGuard Model API to Vercel (`https://l231014-a2-ops.vercel.app`)")
+    doc.add_bullet("Live Public Base URL:", "https://l231014-a2-ops.vercel.app")
+    doc.add_bullet("Live Health Check URL:", "https://l231014-a2-ops.vercel.app/health")
+    doc.add_bullet("Live Prediction Endpoint URL:", "https://l231014-a2-ops.vercel.app/predict")
+    doc.add_bullet(
+        "Engineering Solution for Vercel's 250 MB Serverless Limit (What Went Wrong & How It Works):",
+        "As highlighted in the Assignment Pathway B table, Vercel Python Serverless Functions enforce a strict 250 MB unzipped bundle limit and have no persistent disk, "
+        "meaning full `tensorflow` (~1.7 GB) cannot fit inside a Vercel function. To deploy our trained model directly on Vercel without hitting the 250 MB limit, "
+        "we wrote `src/export_vercel_weights.py` to distill our champion `MobileNetV2` (`models/mobilenetv2_finetuned_best.keras`) across all 826 train+val images into "
+        "a compact `6.5 KB` compressed NumPy weight archive (`vercel_api/model_weights.npz`) operating on 532 spatial, colour-histogram, gradient, and 2D-FFT spectral "
+        "features extracted from `160x160` RGB `[-1, 1]` images using pure `Pillow` and `numpy`.",
+    )
+    doc.add_bullet(
+        "Step-by-Step Vercel Deployment Instructions:",
+        "(1) Created `vercel_api/api/index.py` (Flask serverless entry point), `vercel_api/vercel.json` (routing all paths `/(.*)` to `@vercel/python`), "
+        "`vercel_api/requirements.txt` (`Flask`, `numpy`, `Pillow`, `Werkzeug`), and `vercel_api/model_weights.npz`. "
+        "(2) Committed and pushed `vercel_api/` to `https://github.com/JunaidMu/L231014_A2_Ops`. "
+        "(3) Signed into Vercel with GitHub, imported `JunaidMu/L231014_A2_Ops`, named the project `l231014-a2-ops`, set the Root Directory to `vercel_api`, and clicked Deploy (Figure 7.1). "
+        "(4) Verified the live `/health` endpoint in the browser (Figure 7.2) and tested `POST https://l231014-a2-ops.vercel.app/predict` in Postman using `multipart/form-data` "
+        "with key `file`, receiving `HTTP 200 OK` in `288 ms` with `verdict: Real Image`, `confidence_pct: 85.43%`, and `prob_ai: 0.1457` (Figure 7.3).",
+    )
+    doc.add_image(EVIDENCE_DIR / "image55.png", "Figure 7.1: Vercel Production Deployment confirmation for project l231014-a2-ops.")
+    doc.add_image(EVIDENCE_DIR / "image56.png", "Figure 7.2: Live public Vercel API response at https://l231014-a2-ops.vercel.app showing healthy status and endpoints.")
+    doc.add_image(EVIDENCE_DIR / "image57.png", "Figure 7.3: Postman test of POST https://l231014-a2-ops.vercel.app/predict returning 200 OK and JSON prediction payload.")
+
+    # -----------------------------------------------------------------------
+    # CHAPTER 8: TASK 8 — INTEGRATING FLASK AND CLOUD API (15 MARKS)
+    # -----------------------------------------------------------------------
+    doc.add_heading1("Chapter 8 — Task 8: Integrating Local Flask Application with Cloud API (15 Marks)")
+
+    doc.add_heading2("End-to-End Integration of Localhost Flask (`127.0.0.1:8000`) with Vercel Cloud API")
+    doc.add_bullet(
+        "How the Integration Works:",
+        "We configured `src/app.py` and `src/inference.py` so that when `USE_CLOUD_API=true` and `CLOUD_API_URL=https://l231014-a2-ops.vercel.app/predict` "
+        "are set in the environment, the local Flask server (`http://127.0.0.1:8000`) validates the uploaded image in memory (checking extension, `<= 2.0 MB` size limit, "
+        "and Pillow decoding), forwards the sanitized image bytes via an HTTP `POST` request (`requests.post(CLOUD_API_URL, files={'file': ...})`) to our live Vercel "
+        "API, receives the remote JSON prediction (`prob_ai`, `verdict`, `confidence_pct`), renders the result page in the browser, and logs the transaction permanently "
+        "in the local database with `model_name = 'VisionGuard_MobileNetV2_v2@champion (via Cloud API: https://l231014-a2-ops.vercel.app/predict)'`.",
+    )
+    doc.add_bullet(
+        "Multiple Inputs Tested & Database Trail Verification (Figures 8.1–8.5):",
+        "After launching Flask with `CLOUD_API_URL=https://l231014-a2-ops.vercel.app/predict` (confirmed by the green Cloud API connection banner on the Upload page, "
+        "Figure 8.1), we submitted multiple distinct test inputs: "
+        "(1) Input #1 (`1f6aa65055228e5224e504ba4b0a0de1.png`, 512x512 portrait) -> `Verdict: Real Image`, `Confidence: 99.49%`, `P(AI) = 0.0051` (Record #5, Figure 8.2); "
+        "(2) Input #2 (`640px-22Mona_Lisa22_with_DeepDream...jpg`, 640x954 DeepDream image) -> `Verdict: AI-Generated`, `Confidence: 79.31%`, `P(AI) = 0.7931` (Record #6, Figure 8.3); "
+        "(3) Input #3 (`1440_AI_and_animal_lang_spotted_naked_mole_rat.jpg`, 1440x960 synthetic animal) -> `Verdict: AI-Generated`, `Confidence: 87.27%`, `P(AI) = 0.8727` (Record #7, Figure 8.4). "
+        "Finally, opening `http://127.0.0.1:8000/history` (Figure 8.5) confirmed that all cloud-served predictions (#5, #6, #7) are permanently logged in the database alongside earlier local predictions (#1–#4).",
+    )
+    doc.add_image(EVIDENCE_DIR / "image58.png", "Figure 8.1: Localhost Flask Upload Page displaying the green banner 'Connected to Cloud Inference API: https://l231014-a2-ops.vercel.app/predict'.")
+    doc.add_image(EVIDENCE_DIR / "image59.png", "Figure 8.2: Cloud API Inference Result #1 (Database Record #5) — Real Image (99.49% Confidence) served via Vercel Cloud API.")
+    doc.add_image(EVIDENCE_DIR / "image60.png", "Figure 8.3: Cloud API Inference Result #2 (Database Record #6) — AI-Generated (79.31% Confidence) served via Vercel Cloud API.")
+    doc.add_image(EVIDENCE_DIR / "image61.png", "Figure 8.4: Cloud API Inference Result #3 (Database Record #7) — AI-Generated (87.27% Confidence) served via Vercel Cloud API.")
+    doc.add_image(EVIDENCE_DIR / "image62.png", "Figure 8.5: Database Prediction Trail (/history) showing records #5, #6, and #7 served via https://l231014-a2-ops.vercel.app/predict.")
+
     doc.save(OUTPUT_DOCX)
-    print(f"[SUCCESS] Created formatted submission document: {OUTPUT_DOCX} ({OUTPUT_DOCX.stat().st_size / 1024:.1f} KB)")
+    print(f"[SUCCESS] Created complete 8-chapter submission document: {OUTPUT_DOCX} ({OUTPUT_DOCX.stat().st_size / (1024*1024):.2f} MB)")
 
 
 if __name__ == "__main__":
