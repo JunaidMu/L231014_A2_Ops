@@ -1,0 +1,16 @@
+Layer Name,Layer Type,Output Shape,Param Count,Trainable
+input_image,InputLayer,"(None, 160, 160, 3)",0,True
+rescale_0_1,Rescaling,"(None, 160, 160, 3)",0,True
+conv1,Conv2D,"(None, 160, 160, 32)",896,True
+bn1,BatchNormalization,"(None, 160, 160, 32)",128,True
+pool1,MaxPooling2D,"(None, 80, 80, 32)",0,True
+conv2,Conv2D,"(None, 80, 80, 64)",18496,True
+bn2,BatchNormalization,"(None, 80, 80, 64)",256,True
+pool2,MaxPooling2D,"(None, 40, 40, 64)",0,True
+conv3,Conv2D,"(None, 40, 40, 128)",73856,True
+bn3,BatchNormalization,"(None, 40, 40, 128)",512,True
+pool3,MaxPooling2D,"(None, 20, 20, 128)",0,True
+gap,GlobalAveragePooling2D,"(None, 128)",0,True
+dense_hidden,Dense,"(None, 64)",8256,True
+dropout,Dropout,"(None, 64)",0,True
+sigmoid_output,Dense,"(None, 1)",65,True

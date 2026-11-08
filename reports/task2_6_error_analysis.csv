@@ -1,0 +1,11 @@
+Error #,File,True Class,Predicted Class,P(AI),Original Size,Hypothesis
+1,people-strategy_1200x700.jpg,Real,AI,0.985,1200x700,Stylized digital illustration / hyper-smooth lighting in RealArt mimics AI synthesis
+2,young-girl-holding-chaffinch-upton-house-1336611.jpg,Real,AI,0.959,2880x1620,Extreme aspect ratio (2880x1620) squashed during non-aspect-preserving resize
+3,picturesque-scenery-waterfall-flowing-through-260nw-2360180703.jpg,Real,AI,0.953,390x280,Low native resolution / compression artifacts lost during 160x160 upscaling
+4,most-famous-paintings-by-jan-van-eyck.jpg,Real,AI,0.917,1200x690,Stylized digital illustration / hyper-smooth lighting in RealArt mimics AI synthesis
+5,nature-scenery.jpg,Real,AI,0.907,698x699,Stylized digital illustration / hyper-smooth lighting in RealArt mimics AI synthesis
+6,images19.jpg,Real,AI,0.896,183x275,Low native resolution / compression artifacts lost during 160x160 upscaling
+7,ai-cartoon-portraits-01.jpg,AI,Real,0.105,1000x1012,Photorealistic AI texture & natural lighting closely mimics authentic photography
+8,Mali_-_Bozo_girl_in_Bamako.jpg,Real,AI,0.894,2336x3504,Stylized digital illustration / hyper-smooth lighting in RealArt mimics AI synthesis
+9,Bu69yrI45ueNWQX84ap5.jpg,AI,Real,0.133,1024x768,Photorealistic AI texture & natural lighting closely mimics authentic photography
+10,2-23-3-4-20-14-31m.jpg,Real,AI,0.862,720x720,Stylized digital illustration / hyper-smooth lighting in RealArt mimics AI synthesis
