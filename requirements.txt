@@ -1,0 +1,23 @@
+# Core Machine Learning & Vision
+tensorflow
+keras-tuner
+# Data Processing & Exploratory Data Analysis (EDA)
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+Pillow
+kagglehub
+# MLOps & Experiment Tracking
+dvc
+mlflow
+dagshub
+# Web Application (Flask) & API Integration
+Flask
+Flask-SQLAlchemy
+python-dotenv
+requests
+# CI/CD, Testing & Linting
+pytest
+flake8

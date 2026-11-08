@@ -1,0 +1,36 @@
+# Python & Virtual Environment
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Environment Variables & Secrets (Task 3.2 & Task 6.3)
+.env
+
+# Dataset & DVC Managed Files (Task 1.4)
+/data/raw
+/dvc_storage/
+/dvc_toy_lab/
+
+# MLflow & Keras Tuner Local Artifacts
+mlruns/
+mlartifacts/
+kt_dir/
+*.db
+*.sqlite3
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+~$*
+
+/dvc_toy_remote/
+/models/
+*.pdf
+*.docx
+
+/dvc_toy_remote/
+/models/
+*.pdf
+*.docx

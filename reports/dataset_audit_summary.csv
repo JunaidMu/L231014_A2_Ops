@@ -1,0 +1,4 @@
+Class,Total Files,Valid Images,Corrupt Files,Exact Duplicates (within/across),Width (Min / Median / Max),Height (Min / Median / Max),File Size KB (Min / Median / Max)
+AiArtData,538,538,0,1,225 / 1028 / 6000,135 / 800 / 4001,11.5 / 195.1 / 5494.3
+RealArt,435,435,0,0,183 / 940 / 8495,158 / 720 / 7091,11.1 / 141.6 / 9956.4
+ALL (Total),973,973,0,1,183 / 1024 / 8495,135 / 768 / 7091,11.1 / 165.4 / 9956.4
